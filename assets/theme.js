@@ -830,6 +830,17 @@ slate.Variants = (function() {
       $(this.originalSelectorId, this.$container).val(variant.id);
     }
   });
+  document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.color-swatch').forEach(function(swatch) {
+      swatch.addEventListener('click', function() {
+
+        const productImage = this.closest('.grid-view-item').querySelector('.grid-view-item__image');
+        productImage.src = $(this).data("image");
+        productImage.srcset = $(this).data("image");
+
+      });
+    });
+  });
 
   return Variants;
 })();

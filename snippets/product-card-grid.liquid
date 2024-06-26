@@ -1,7 +1,5 @@
 <div class="grid-view-item{% unless product.available %} grid-view-item--sold-out{% endunless %} product-card" data-product-card>
-  <a class="grid-view-item__link grid-view-item__image-container full-width-link" href="{{ product.url | within: collection }}">
-    <span class="visually-hidden">{{ product.title }}</span>
-  </a>
+  
 
   {% capture img_id %}ProductCardImage-{{ section.id }}-{{ product.id }}{% endcapture %}
   {% capture wrapper_id %}ProductCardImageWrapper-{{ section.id }}-{{ product.id }}{% endcapture %}
@@ -12,6 +10,9 @@
   {% endunless %}
 
   <div class="product-card__image-with-placeholder-wrapper" data-image-with-placeholder-wrapper>
+    <a class="grid-view-item__link grid-view-item__image-container full-width-link" href="{{ product.url | within: collection }}">
+      <span class="visually-hidden">{{ product.title }}</span>
+    </a>
     <div id="{{ wrapper_id }}" class="grid-view-item__image-wrapper product-card__image-wrapper js">
       <div style="padding-top:{% unless product.featured_image == blank %}{{ 1 | divided_by: product.featured_image.aspect_ratio | times: 100 }}%{% else %}100%{% endunless %};">
         <img id="{{ img_id }}"
@@ -34,6 +35,18 @@
 
   <div class="h4 grid-view-item__title product-card__title" aria-hidden="true">{{ product.title }}</div>
 
+  <div class="product-colors">
+    {% for variant in product.variants %}
+      {% if forloop.index < 5 %}
+        <span class="color-swatch" data-variant-id="{{ variant.id }}" 
+          data-image="{{ variant.featured_image | product_img_url: '400x' }}"
+          style="background-color: {{ variant.option2 | downcase }}"></span>
+      {% else %}
+        <a class="plus_more_main" href="{{product.url}}"><span class="plus_more">More</span></a>
+      {% break %}
+      {% endif %}
+    {% endfor %}
+  </div>
   {% include 'product-price', variant: product.selected_or_first_available_variant %}
 
 </div>
